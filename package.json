@@ -1,0 +1,71 @@
+{
+  "name": "@36node/event-sdk",
+  "version": "0.0.0",
+  "description": "Event sdk.",
+  "repository": {
+    "url": "36node/event-sdk",
+    "type": "git"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "template": "sdk",
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "config-overrides-path": "node_modules/@36node/sketch/config-overrides",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "typings": "typings/index.d.ts",
+  "scripts": {
+    "build": "sketch build",
+    "format": "prettier --trailing-comma es5 --write 'src/**/*.js'",
+    "gen": "swagen sdk ../tpl-service/openapi.yml",
+    "lint": "sketch lint src",
+    "release": "standard-version",
+    "start": "bin/mock-server.js",
+    "test:int": "sketch test --env=node"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $GIT_PARAMS",
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run lint && CI=true NODE_ENV=test npm run test"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run format",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "@36node/fetch": "^0.6.0",
+    "@36node/query-normalizr": "^0.4.6",
+    "commander": "^2.19.0"
+  },
+  "devDependencies": {
+    "@36node/eslint-config": "^0.6.2",
+    "@36node/mock-server": "^0.0.7",
+    "@36node/sketch": "^0.13.9",
+    "@36node/swagen": "^0.13.2",
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-conventional": "^7.5.0",
+    "@types/faker": "^4.1.5",
+    "@types/jest": "^24.0.12",
+    "faker": "^4.1.0",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.5",
+    "moment": "^2.24.0",
+    "prettier": "1.17.1",
+    "standard-version": "^6.0.1"
+  },
+  "gitHead": "09e9e49851d148013d5162c46f3de2c73e204592"
+}
