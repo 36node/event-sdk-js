@@ -1,0 +1,973 @@
+openapi: "3.0.0"
+info:
+  version: 0.1.0
+  title: Event Service
+  license:
+    name: MIT
+servers:
+  - url: https://api.36node.com{basePath}
+    description: The production API server
+    variables:
+      basePath:
+        default: /event/v0
+paths:
+  /events:
+    get:
+      summary: List all events
+      operationId: listEvents
+      tags:
+        - event
+      parameters:
+        - name: _limit
+          in: query
+          description: How many items to return at one time
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: _offset
+          in: query
+          description: How many items to escape
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: _sort
+          in: query
+          description: Fields to sort
+          required: false
+          schema:
+            type: string
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+        - name: startedAt_gt
+          in: query
+          description: 按大于活动开始时间查询 格式ISOString 或者 时间戳（秒）
+          required: false
+          schema:
+            type: string
+        - name: startedAt_lt
+          in: query
+          description: 按小于活动开始时间查询 格式ISOString 或者 时间戳（秒）
+          required: false
+          schema:
+            type: string
+        - name: endAt_gt
+          in: query
+          description: 按大于活动结束时间查询 格式ISOString 或者 时间戳（秒）
+          required: false
+          schema:
+            type: string
+        - name: endAt_lt
+          in: query
+          description: 按小于活动结束时间查询 格式ISOString 或者 时间戳（秒）
+          required: false
+          schema:
+            type: string
+        - name: name_like
+          in: query
+          description: 活动名称模糊查询
+          required: false
+          schema:
+            type: string
+        - name: ns
+          in: query
+          required: false
+          description: 根据活动namespace查询
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A paged array of events
+          headers:
+            X-Total-Count:
+              description: Total count of all events match the query
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      summary: Create an event
+      operationId: createEvent
+      tags:
+        - event
+      requestBody:
+        description: Event to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Event"
+      responses:
+        "201":
+          description: The Event created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /events/{eventId}:
+    get:
+      summary: Get event by id
+      operationId: getEvent
+      tags:
+        - event
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          description: The id of event
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The event with given id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    put:
+      summary: Update event
+      operationId: updateEvent
+      tags:
+        - event
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          description: The id of event
+          schema:
+            type: string
+      requestBody:
+        description: Event to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Event"
+      responses:
+        "200":
+          description: The event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      summary: 删除指定活动
+      operationId: deleteEvent
+      tags:
+        - event
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          description: The id of event
+          schema:
+            type: string
+      responses:
+        "204":
+          description: event deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /forms:
+    get:
+      summary: List all forms
+      operationId: listForms
+      tags:
+        - form
+      parameters:
+        - name: eventId
+          in: query
+          description: 活动id
+          required: true
+          schema:
+            type: string
+        - name: _limit
+          in: query
+          description: How many items to return at one time
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: _offset
+          in: query
+          description: How many items to escape
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: _sort
+          in: query
+          description: Fields to sort
+          required: false
+          schema:
+            type: string
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A paged array of forms
+          headers:
+            X-Total-Count:
+              description: Total count of all forms match the query
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Form"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      summary: Create an form
+      operationId: createForm
+      tags:
+        - form
+      requestBody:
+        description: Form to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Form"
+      responses:
+        "201":
+          description: The Form created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Form"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /forms/{formId}:
+    get:
+      summary: Get form by id
+      operationId: getForm
+      tags:
+        - form
+      parameters:
+        - name: formId
+          in: path
+          required: true
+          description: The id of form
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The form with given id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Form"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    put:
+      summary: Update form
+      operationId: updateForm
+      tags:
+        - form
+      parameters:
+        - name: formId
+          in: path
+          required: true
+          description: The id of form
+          schema:
+            type: string
+      requestBody:
+        description: Form to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Form"
+      responses:
+        "200":
+          description: The form
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Form"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      summary: 删除指定表单
+      operationId: deleteForm
+      tags:
+        - form
+      parameters:
+        - name: formId
+          in: path
+          required: true
+          description: The id of form
+          schema:
+            type: string
+      responses:
+        "204":
+          description: form deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /registers:
+    get:
+      summary: List all registers
+      operationId: listRegisters
+      tags:
+        - register
+      parameters:
+        - name: eventId
+          in: query
+          description: 活动id
+          required: true
+          schema:
+            type: string
+        - name: formId
+          in: query
+          description: 表单id
+          required: true
+          schema:
+            type: string
+        - name: _limit
+          in: query
+          description: How many items to return at one time
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: _offset
+          in: query
+          description: How many items to escape
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: _sort
+          in: query
+          description: Fields to sort
+          required: false
+          schema:
+            type: string
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+        - name: name
+          in: query
+          description: name to filter
+          required: false
+          schema:
+            type: string
+        - name: phone
+          in: query
+          description: phone to filter
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A paged array of registers
+          headers:
+            X-Total-Count:
+              description: Total count of all registers match the query
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Register"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      summary: Create an register
+      operationId: createRegister
+      tags:
+        - register
+      requestBody:
+        description: Register to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Register"
+      responses:
+        "201":
+          description: The Register created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Register"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /register/{registerId}:
+    get:
+      summary: Get register by id
+      operationId: getRegister
+      tags:
+        - register
+      parameters:
+        - name: registerId
+          in: path
+          required: true
+          description: The id of register
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The register with given id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Register"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    put:
+      summary: Update Register
+      operationId: updateRegister
+      tags:
+        - register
+      parameters:
+        - name: registerId
+          in: path
+          required: true
+          description: The id of register
+          schema:
+            type: string
+      requestBody:
+        description: Register to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Register"
+      responses:
+        "200":
+          description: The register
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Register"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      summary: 删除指定报名
+      operationId: deleteRegister
+      tags:
+        - register
+      parameters:
+        - name: registerId
+          in: path
+          required: true
+          description: The id of register
+          schema:
+            type: string
+      responses:
+        "204":
+          description: register deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+security:
+  - bearerAuth: []
+
+components:
+  responses:
+    NoContent:
+      description: The resource was deleted successfully.
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Err"
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Err"
+    InternalError:
+      description: unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Err"
+  schemas:
+    Event:
+      type: object
+      required:
+        - id
+        - startedAt
+        - endAt
+        - name
+        - address
+        - ns
+      properties:
+        # 基本字段
+        id:
+          type: string
+        createdAt:
+          type: string
+          format: date
+          description: "创建时间"
+        updatedAt:
+          type: string
+          format: date
+          description: "更新时间"
+        signinStartAt:
+          type: string
+          format: date
+          description: "报名开始时间"
+        signinEndAt:
+          type: string
+          format: date
+          description: "报名结束时间"
+        deleted:
+          type: boolean
+          default: false
+          description: "是否已经删除"
+        deletedAt:
+          type: string
+          format: date
+          description: "删除时间"
+        published:
+          type: boolean
+          default: false
+          description: "是否已经发布"
+        publishedAt:
+          type: string
+          format: date
+          description: "发布时间"
+        publishedBy:
+          type: string
+          description: "发布人"
+        ns:
+          type: string
+          description: "活动所属命名空间"
+        siginin:
+          type: array
+          description: "签到设置"
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: "签到id"
+              name:
+                type: string
+                description: "签到名称"
+              createdAt:
+                type: string
+                format: date
+                description: "创建时间"
+        # 模块 预置基本信息，日程，嘉宾，精彩瞬间四个模块
+        # 基本信息模块为必须
+        modules:
+          description: 模块
+          type: array
+          items:
+            id:
+              type: string
+              description: "id"
+            name:
+              type: string
+              description: "名称"
+            order:
+              type: string
+              description: "顺序"
+            required:
+              type: boolean
+              default: false
+              description: "是否必须"
+            content:
+              # 基本信息
+              #   description: 基本信息
+              #   $ref: "#/components/schemas/Basic"
+              # 日程
+              #   description: 日程
+              #   type: array
+              #   items:
+              #     $ref: "#/components/schemas/Agenda"
+              # 嘉宾
+              #   description: 嘉宾
+              #   type: array
+              #   items:
+              #     $ref: "#/components/schemas/Guest"
+              # 精彩瞬间
+              #   description: 精彩瞬间
+              #   type: array
+              #   items:
+              #     $ref: "#/components/schemas/File"
+              description: 自定义模块
+              $ref: "#/components/schemas/Custom"
+            language:
+              description: 多语言
+              type: array
+              items:
+                $ref: "#/components/schemas/Language"
+
+    Basic:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "活动名称"
+        startedAt:
+          type: string
+          format: date
+          description: "活动开始时间"
+        endAt:
+          type: string
+          format: date
+          description: "活动结束时间"
+        address:
+          type: string
+          description: "活动地址"
+        desc:
+          type: string
+          description: "活动介绍"
+        bannerPc:
+          type: string
+          description: "活动pc banner图"
+        bannerMobile:
+          type: string
+          description: "活动mobile banner图"
+
+    Agenda:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+          description: "日期"
+        startAt:
+          type: string
+          format: date
+          description: "开始时间"
+        endAt:
+          type: string
+          format: date
+          description: "结束时间"
+        subject:
+          type: string
+          description: "内容"
+        speaker:
+          type: string
+          description: "嘉宾"
+        file:
+          type: array
+          items:
+            $ref: "#/components/schemas/File"
+
+    Guest:
+      type: object
+      properties:
+        avatar:
+          type: string
+          description: "头像"
+        name:
+          type: string
+          description: "姓名"
+        position:
+          type: string
+          description: "职位"
+        intro:
+          type: string
+          description: "简介"
+
+    Custom:
+      type: object
+      properties:
+        content:
+          type: string
+          description: "内容"
+
+    Language:
+      type: object
+      properties:
+        lan:
+          type: string
+          description: "语言名称"
+        content:
+          type: object
+          description: "内容"
+
+    File:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "id"
+        name:
+          type: string
+          description: "名称"
+        url:
+          type: string
+          description: "链接"
+
+    Form:
+      type: object
+      required:
+        - id
+        - eventId
+      properties:
+        # 基本字段
+        id:
+          type: string
+        eventId:
+          type: string
+          description: "活动Id"
+        createdAt:
+          type: string
+          format: date
+          description: "创建时间"
+        updatedAt:
+          type: string
+          format: date
+          description: "更新时间"
+        deleted:
+          type: boolean
+          default: false
+          description: "是否已经删除"
+        deletedAt:
+          type: string
+          format: date
+          description: "删除时间"
+        # 业务字段
+        name:
+          type: string
+          description: "表单名称"
+        code:
+          type: string
+          description: "邀请码"
+        fields:
+          type: array
+          description: "表单"
+          items:
+            $ref: "#/components/schemas/Field"
+
+    Field:
+      type: object
+      properties:
+        basic:
+          type: boolean
+          default: false
+          description: "是否基本表单"
+        required:
+          type: boolean
+          default: false
+          description: "是否必须"
+        field:
+          type: string
+          description: "表单key"
+        type:
+          type: string
+          description: "表单类型"
+        title:
+          type: string
+          description: "表单名称"
+        placeholder:
+          type: string
+          description: "表单placeholder"
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                description: "label"
+              value:
+                type: string
+                description: "value"
+
+    Register:
+      type: object
+      required:
+        - id
+        - eventId
+        - formId
+      properties:
+        # 基本字段
+        id:
+          type: string
+        eventId:
+          type: string
+          description: "活动Id"
+        formId:
+          type: string
+          description: "表单Id"
+        createdAt:
+          type: string
+          format: date
+          description: "创建时间"
+        updatedAt:
+          type: string
+          format: date
+          description: "更新时间"
+        deleted:
+          type: boolean
+          default: false
+          description: "是否已经删除"
+        deletedAt:
+          type: string
+          format: date
+          description: "删除时间"
+        # 业务字段
+        code:
+          type: string
+          description: "邀请码"
+        chineseName:
+          type: string
+          description: "中文名"
+        englishName:
+          type: string
+          description: "英文名"
+        gender:
+          type: string
+          description: "性别"
+        industry:
+          type: string
+          description: "行业"
+        company:
+          type: string
+          description: "公司"
+        position:
+          type: string
+          description: "职位"
+        department:
+          type: string
+          description: "部门"
+        phone:
+          type: string
+          description: "手机"
+        email:
+          type: string
+          description: "邮箱"
+        extra:
+          type: object
+          description: "其他信息"
+        signin:
+          type: array
+          description: "签到信息"
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: "签到Id"
+              name:
+                type: string
+                description: "签到名称"
+              time:
+                type: string
+                format: date
+                description: "签到时间"
+              signed:
+                type: boolean
+                default: false
+                description: "是否签到"
+
+    Err:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
