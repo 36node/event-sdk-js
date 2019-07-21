@@ -191,7 +191,8 @@ export default class SDK {
       const { eventId, registerId, query, headers } = req;
 
       if (!eventId) throw new Error("eventId is required for getRegister");
-      if (!registerId) throw new Error("registerId is required for getRegister");
+      if (!registerId)
+        throw new Error("registerId is required for getRegister");
 
       return fetch(`${this.base}/events/${eventId}/registers/${registerId}`, {
         method: "GET",
@@ -209,7 +210,8 @@ export default class SDK {
       const { eventId, registerId, headers, body } = req;
 
       if (!eventId) throw new Error("eventId is required for updateRegister");
-      if (!registerId) throw new Error("registerId is required for updateRegister");
+      if (!registerId)
+        throw new Error("registerId is required for updateRegister");
       if (!body) throw new Error("requetBody is required for updateRegister");
 
       return fetch(`${this.base}/events/${eventId}/registers/${registerId}`, {
@@ -228,7 +230,8 @@ export default class SDK {
       const { eventId, registerId, headers } = req;
 
       if (!eventId) throw new Error("eventId is required for deleteRegister");
-      if (!registerId) throw new Error("registerId is required for deleteRegister");
+      if (!registerId)
+        throw new Error("registerId is required for deleteRegister");
 
       return fetch(`${this.base}/events/${eventId}/registers/${registerId}`, {
         method: "DELETE",
@@ -285,7 +288,8 @@ export default class SDK {
       const { eventId, attendeeId, headers } = req;
 
       if (!eventId) throw new Error("eventId is required for getAttendee");
-      if (!attendeeId) throw new Error("attendeeId is required for getAttendee");
+      if (!attendeeId)
+        throw new Error("attendeeId is required for getAttendee");
 
       return fetch(`${this.base}/events/${eventId}/attendees/${attendeeId}`, {
         method: "GET",
@@ -302,7 +306,8 @@ export default class SDK {
       const { eventId, attendeeId, headers, body } = req;
 
       if (!eventId) throw new Error("eventId is required for updateAttendee");
-      if (!attendeeId) throw new Error("attendeeId is required for updateAttendee");
+      if (!attendeeId)
+        throw new Error("attendeeId is required for updateAttendee");
       if (!body) throw new Error("requetBody is required for updateAttendee");
 
       return fetch(`${this.base}/events/${eventId}/attendees/${attendeeId}`, {
@@ -321,7 +326,8 @@ export default class SDK {
       const { eventId, attendeeId, headers } = req;
 
       if (!eventId) throw new Error("eventId is required for deleteAttendee");
-      if (!attendeeId) throw new Error("attendeeId is required for deleteAttendee");
+      if (!attendeeId)
+        throw new Error("attendeeId is required for deleteAttendee");
 
       return fetch(`${this.base}/events/${eventId}/attendees/${attendeeId}`, {
         method: "DELETE",
