@@ -6,7 +6,6 @@ defaults: &defaults
     - image: circleci/node:10
 
 jobs:
-
   build:
     <<: *defaults
     steps:
@@ -64,7 +63,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "b1:ae:28:64:a6:7f:88:27:a9:6c:12:a7:85:d9:4e:03"
+            - "37:67:1a:a6:71:66:ef:be:c9:bf:86:6b:10:5c:6b:aa"
       - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
@@ -85,13 +84,13 @@ workflows:
   main:
     jobs:
       - build:
-          filters:  # required since `release` has tag filters AND requires `build`
+          filters: # required since `release` has tag filters AND requires `build`
             tags:
               only: /.*/
       - test:
           requires:
             - build
-          filters:  # required since `release` has tag filters AND requires `test`
+          filters: # required since `release` has tag filters AND requires `test`
             tags:
               only: /.*/
       - release:
