@@ -108,7 +108,7 @@ declare namespace SDK {
           $gt?: string;
           $lt?: string;
         };
-        name: {
+        "basic.content.title": {
           $regex?: string;
         };
         ns?: string;
@@ -169,6 +169,10 @@ declare namespace SDK {
       offset?: number;
       sort?: string;
       select?: number;
+
+      filter: {
+        code?: string;
+      };
     };
   };
 
@@ -229,9 +233,10 @@ declare namespace SDK {
       select?: number;
 
       filter: {
-        registerId?: string;
+        register?: string;
         name?: string;
         phone?: string;
+        q?: string;
       };
     };
   };
@@ -282,19 +287,18 @@ declare namespace SDK {
     createdBy: string;
     updatedAt: string;
     updatedBy: string;
-    name: string;
-    startedAt: string;
+    startAt: string;
     endAt: string;
-    address: string;
-    desc: string;
-    bannerPc: string;
-    bannerMobile: string;
     signinStartAt: string;
     signinEndAt: string;
     published: boolean;
     publishedAt: string;
     publishedBy: string;
     ns: string;
+    isSms: boolean;
+    isEmail: boolean;
+    smsTemplate: string;
+    emailTemplate: string;
     siginin: [
       {
         id: string;
@@ -302,10 +306,17 @@ declare namespace SDK {
         createdAt: string;
       }
     ];
-    i18n: [
+    basic: [
       {
         lan: string;
-        content: {};
+        content: {
+          title: string;
+          address: string;
+          desc: string;
+          thumbnail: string;
+          bannerPc: string;
+          bannerMobile: string;
+        };
       }
     ];
     modules: [
@@ -313,7 +324,68 @@ declare namespace SDK {
         id: string;
         name: string;
         type: string;
-        body:
+        body: [
+          {
+            lan: string;
+            content:
+              | [
+                  {
+                    date: string;
+                    start: string;
+                    end: string;
+                    subject: string;
+                    speakers: string;
+                    files: [
+                      {
+                        id: string;
+                        name: string;
+                        url: string;
+                      }
+                    ];
+                  }
+                ]
+              | [
+                  {
+                    avatar: string;
+                    name: string;
+                    position: string;
+                    intro: string;
+                  }
+                ]
+              | [
+                  {
+                    id: string;
+                    name: string;
+                    url: string;
+                  }
+                ]
+              | {
+                  content: {};
+                };
+          }
+        ];
+      }
+    ];
+  };
+  type Basic = {
+    lan: string;
+    content: {
+      title: string;
+      address: string;
+      desc: string;
+      thumbnail: string;
+      bannerPc: string;
+      bannerMobile: string;
+    };
+  };
+  type Module = {
+    id: string;
+    name: string;
+    type: string;
+    body: [
+      {
+        lan: string;
+        content:
           | [
               {
                 date: string;
@@ -348,20 +420,12 @@ declare namespace SDK {
           | {
               content: {};
             };
-        i18n: [
-          {
-            lan: string;
-            content: {};
-          }
-        ];
       }
     ];
   };
-  type Module = {
-    id: string;
-    name: string;
-    type: string;
-    body:
+  type ModuleBody = {
+    lan: string;
+    content:
       | [
           {
             date: string;
@@ -396,12 +460,6 @@ declare namespace SDK {
       | {
           content: {};
         };
-    i18n: [
-      {
-        lan: string;
-        content: {};
-      }
-    ];
   };
   type Agenda = {
     date: string;
@@ -439,15 +497,44 @@ declare namespace SDK {
     id: string;
     createdAt: string;
     updatedAt: string;
-    eventId: string;
+    event: string;
     name: string;
     code: string;
-    fields: [
+    body: [
+      {
+        lan: string;
+        content: [
+          {
+            lan: string;
+            content: [
+              {
+                basic: boolean;
+                required: boolean;
+                key: string;
+                type: "INPUT" | "RADIO" | "CHECKBOX" | "SELECT" | "DATE";
+                title: string;
+                placeholder: string;
+                options: [
+                  {
+                    label: string;
+                    value: string;
+                  }
+                ];
+              }
+            ];
+          }
+        ];
+      }
+    ];
+  };
+  type Fields = {
+    lan: string;
+    content: [
       {
         basic: boolean;
         required: boolean;
         key: string;
-        type: string;
+        type: "INPUT" | "RADIO" | "CHECKBOX" | "SELECT" | "DATE";
         title: string;
         placeholder: string;
         options: [
@@ -458,18 +545,12 @@ declare namespace SDK {
         ];
       }
     ];
-    i18n: [
-      {
-        lan: string;
-        content: {};
-      }
-    ];
   };
   type Field = {
     basic: boolean;
     required: boolean;
     key: string;
-    type: string;
+    type: "INPUT" | "RADIO" | "CHECKBOX" | "SELECT" | "DATE";
     title: string;
     placeholder: string;
     options: [
@@ -483,8 +564,8 @@ declare namespace SDK {
     id: string;
     createdAt: string;
     updatedAt: string;
-    eventId: string;
-    registerId: string;
+    event: string;
+    register: string;
     code: string;
     name: string;
     gender: string;

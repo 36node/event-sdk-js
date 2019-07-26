@@ -100,10 +100,10 @@
     tmp "^0.0.33"
     webpack-filter-warnings-plugin "^1.2.1"
 
-"@36node/swagen@^0.13.2":
-  version "0.13.3"
-  resolved "https://registry.yarnpkg.com/@36node/swagen/-/swagen-0.13.3.tgz#ef80ac52b6c19c1a7735e92f0e0dc111a351b101"
-  integrity sha512-y7syOta8FLydmSpMf+loEbc6tf1k8G+8HX1rtiKlytK/0kR+Iwpvy1We4NMLEOA2yBIgG/kI3luusyFKvSyKJg==
+"@36node/swagen@^0.13.4":
+  version "0.13.4"
+  resolved "https://registry.yarnpkg.com/@36node/swagen/-/swagen-0.13.4.tgz#494fc414e4aa7c77082e24d275b79feef57a1766"
+  integrity sha512-uToyei0UUu+gP2HP6Ac2PMIbb+Mqi9QG5W0qzp53WQdL1Ggetzuejb5+zcFcrPCeRASp0oeZ4Vdu7sZJMTsv6A==
   dependencies:
     "@36node/query-normalizr" "^0.4.6"
     handlebars "^4.0.12"
