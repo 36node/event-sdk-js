@@ -317,7 +317,7 @@ export default class SDK {
       });
     },
     /**
-     * 删除指定报名
+     * Delete attendee by Id
      *
      * @param {DeleteAttendeeRequest} req deleteAttendee request
      * @returns {Promise<DeleteAttendeeResponse>} attendee deleted

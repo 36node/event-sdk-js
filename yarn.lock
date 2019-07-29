@@ -40,10 +40,10 @@
     lodash "^4.17.11"
     moment "^2.24.0"
 
-"@36node/mock-server@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@36node/mock-server/-/mock-server-0.0.8.tgz#9a1fa3d0c45b7ae53b883a807cc2553c6b7411f3"
-  integrity sha512-wY/NdWPLsd+rjjf01JQ/etsiD7gh4ZMguxRONNtN86DBVFSlybR9Oijqqdg3MR3VOBuN5zFvyipivORFYXqOlQ==
+"@36node/mock-server@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@36node/mock-server/-/mock-server-0.0.9.tgz#8caeee07cf459f6a35ae448e1f88e9d2c5c3a380"
+  integrity sha512-jA1wZGtnumXR0DyoWB9+aXDytVi/nEwr2tCr+F4krqFU81WhATqTi0xad4W7T5FQ16tjeNxCvGXhjGYUnpGWIw==
   dependencies:
     express "^4.17.0"
     humps "^2.0.1"
@@ -59,12 +59,12 @@
     humps "^2.0.1"
     lodash "^4.17.11"
 
-"@36node/sketch@^0.13.9":
-  version "0.13.10"
-  resolved "https://registry.yarnpkg.com/@36node/sketch/-/sketch-0.13.10.tgz#e60b347f3e3531782dec8de833d84e72da325568"
-  integrity sha512-LM4nCr27n4ZlnoUbz2pNrl6R+hI+iHeI/DUBkj7vmm85Xf9OI5eyRvC38Qa/v9gQOBkVV4Djz99eHo+XNXtZcQ==
+"@36node/sketch@^0.13.11":
+  version "0.13.11"
+  resolved "https://registry.yarnpkg.com/@36node/sketch/-/sketch-0.13.11.tgz#6628ebfca9bd0b8449162962475cd70e93a97e07"
+  integrity sha512-wbbm5fYQZCn39ARyEYXZ0H6c565qcoZFpQvc0fWmZo2oB4PKWw0CA45OCS1UQ3ctZ62Zr3usFZ3U+xaZmzHXFg==
   dependencies:
-    "@36node/mock-server" "^0.0.8"
+    "@36node/mock-server" "^0.0.9"
     "@36node/query-normalizr" "^0.4.6"
     "@babel/plugin-proposal-decorators" "7.4.4"
     babel-loader "8.0.5"
@@ -100,10 +100,10 @@
     tmp "^0.0.33"
     webpack-filter-warnings-plugin "^1.2.1"
 
-"@36node/swagen@^0.13.2":
-  version "0.13.3"
-  resolved "https://registry.yarnpkg.com/@36node/swagen/-/swagen-0.13.3.tgz#ef80ac52b6c19c1a7735e92f0e0dc111a351b101"
-  integrity sha512-y7syOta8FLydmSpMf+loEbc6tf1k8G+8HX1rtiKlytK/0kR+Iwpvy1We4NMLEOA2yBIgG/kI3luusyFKvSyKJg==
+"@36node/swagen@^0.13.4":
+  version "0.13.4"
+  resolved "https://registry.yarnpkg.com/@36node/swagen/-/swagen-0.13.4.tgz#494fc414e4aa7c77082e24d275b79feef57a1766"
+  integrity sha512-uToyei0UUu+gP2HP6Ac2PMIbb+Mqi9QG5W0qzp53WQdL1Ggetzuejb5+zcFcrPCeRASp0oeZ4Vdu7sZJMTsv6A==
   dependencies:
     "@36node/query-normalizr" "^0.4.6"
     handlebars "^4.0.12"
