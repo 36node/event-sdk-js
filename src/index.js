@@ -335,4 +335,94 @@ export default class SDK {
       });
     },
   };
+  /**
+   * language's methods
+   */
+  language = {
+    /**
+     * List all languages
+     *
+     * @param {ListLanguagesRequest} req listLanguages request
+     * @returns {Promise<ListLanguagesResponse>} A paged array of languages
+     */
+    listLanguages: (req = {}) => {
+      const { query, headers } = req;
+
+      return fetch(`${this.base}/languages`, {
+        method: "GET",
+        query: denormalize(query),
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
+     * Create an language
+     *
+     * @param {CreateLanguageRequest} req createLanguage request
+     * @returns {Promise<CreateLanguageResponse>} The Language created
+     */
+    createLanguage: (req = {}) => {
+      const { headers, body } = req;
+
+      if (!body) throw new Error("requetBody is required for createLanguage");
+
+      return fetch(`${this.base}/languages`, {
+        method: "POST",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
+     * Get language by id
+     *
+     * @param {GetLanguageRequest} req getLanguage request
+     * @returns {Promise<GetLanguageResponse>} The language with given id
+     */
+    getLanguage: (req = {}) => {
+      const { languageId, headers } = req;
+
+      if (!languageId)
+        throw new Error("languageId is required for getLanguage");
+
+      return fetch(`${this.base}/languages/${languageId}`, {
+        method: "GET",
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
+     * Update language
+     *
+     * @param {UpdateLanguageRequest} req updateLanguage request
+     * @returns {Promise<UpdateLanguageResponse>} The language
+     */
+    updateLanguage: (req = {}) => {
+      const { languageId, headers, body } = req;
+
+      if (!languageId)
+        throw new Error("languageId is required for updateLanguage");
+      if (!body) throw new Error("requetBody is required for updateLanguage");
+
+      return fetch(`${this.base}/languages/${languageId}`, {
+        method: "PUT",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
+     * 删除指定语言
+     *
+     * @param {DeleteLanguageRequest} req deleteLanguage request
+     * @returns {Promise<DeleteLanguageResponse>} language deleted
+     */
+    deleteLanguage: (req = {}) => {
+      const { languageId, headers } = req;
+
+      if (!languageId)
+        throw new Error("languageId is required for deleteLanguage");
+
+      return fetch(`${this.base}/languages/${languageId}`, {
+        method: "DELETE",
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+  };
 }

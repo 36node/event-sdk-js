@@ -11,6 +11,7 @@ declare class SDK {
   module: SDK.ModuleAPI;
   register: SDK.RegisterAPI;
   attendee: SDK.AttendeeAPI;
+  language: SDK.LanguageAPI;
 }
 
 declare namespace SDK {
@@ -91,6 +92,28 @@ declare namespace SDK {
      */
     deleteAttendee(req: DeleteAttendeeRequest): Promise<DeleteAttendeeResponse>;
   }
+  export interface LanguageAPI {
+    /**
+     * List all languages
+     */
+    listLanguages(req: ListLanguagesRequest): Promise<ListLanguagesResponse>;
+    /**
+     * Create an language
+     */
+    createLanguage(req: CreateLanguageRequest): Promise<CreateLanguageResponse>;
+    /**
+     * Get language by id
+     */
+    getLanguage(req: GetLanguageRequest): Promise<GetLanguageResponse>;
+    /**
+     * Update language
+     */
+    updateLanguage(req: UpdateLanguageRequest): Promise<UpdateLanguageResponse>;
+    /**
+     * 删除指定语言
+     */
+    deleteLanguage(req: DeleteLanguageRequest): Promise<DeleteLanguageResponse>;
+  }
 
   type ListEventsRequest = {
     query: {
@@ -108,7 +131,7 @@ declare namespace SDK {
           $gt?: string;
           $lt?: string;
         };
-        "basic.content.title": {
+        title: {
           $regex?: string;
         };
         ns?: string;
@@ -281,6 +304,68 @@ declare namespace SDK {
     attendeeId: string;
   };
 
+  type ListLanguagesRequest = {
+    query: {
+      limit?: number;
+      offset?: number;
+      sort?: string;
+      select?: number;
+
+      filter: {
+        startedAt: {
+          $gt?: string;
+          $lt?: string;
+        };
+        endAt: {
+          $gt?: string;
+          $lt?: string;
+        };
+        lang?: string;
+        key?: string;
+        event?: string;
+        register?: string;
+        module?: string;
+        basic?: boolean;
+      };
+    };
+  };
+
+  type ListLanguagesResponse = {
+    body: [Language];
+    headers: {
+      xTotalCount: string;
+    };
+  };
+
+  type CreateLanguageRequest = {
+    body: Language;
+  };
+
+  type CreateLanguageResponse = {
+    body: Language;
+  };
+
+  type GetLanguageRequest = {
+    languageId: string;
+  };
+
+  type GetLanguageResponse = {
+    body: Language;
+  };
+
+  type UpdateLanguageRequest = {
+    languageId: string;
+    body: Language;
+  };
+
+  type UpdateLanguageResponse = {
+    body: Language;
+  };
+
+  type DeleteLanguageRequest = {
+    languageId: string;
+  };
+
   type Event = {
     id: string;
     createdAt: string;
@@ -291,6 +376,12 @@ declare namespace SDK {
     endAt: string;
     signUpStartAt: string;
     signUpEndAt: string;
+    title: string;
+    address: string;
+    desc: string;
+    thumbnail: string;
+    bannerPc: string;
+    bannerMobile: string;
     published: boolean;
     publishedAt: string;
     publishedBy: string;
@@ -307,100 +398,20 @@ declare namespace SDK {
         createdAt: string;
       }
     ];
-    basic: [
-      {
-        lan: string;
-        content: {
-          title: string;
-          address: string;
-          desc: string;
-          thumbnail: string;
-          bannerPc: string;
-          bannerMobile: string;
-        };
-      }
-    ];
     modules: [
       {
         id: string;
         name: string;
         type: string;
-        body: [
-          {
-            lan: string;
-            content:
-              | [
-                  {
-                    date: string;
-                    start: string;
-                    end: string;
-                    subject: string;
-                    speakers: string;
-                    files: [
-                      {
-                        id: string;
-                        name: string;
-                        url: string;
-                      }
-                    ];
-                  }
-                ]
-              | [
-                  {
-                    avatar: string;
-                    name: string;
-                    position: string;
-                    intro: string;
-                  }
-                ]
-              | [
-                  {
-                    id: string;
-                    name: string;
-                    url: string;
-                  }
-                ]
-              | {
-                  content: {};
-                };
-          }
-        ];
-      }
-    ];
-  };
-  type Basic = {
-    lan: string;
-    content: {
-      title: string;
-      address: string;
-      desc: string;
-      thumbnail: string;
-      bannerPc: string;
-      bannerMobile: string;
-    };
-  };
-  type Module = {
-    id: string;
-    name: string;
-    type: string;
-    body: [
-      {
-        lan: string;
-        content:
+        body:
           | [
               {
                 date: string;
                 start: string;
                 end: string;
                 subject: string;
-                speakers: string;
-                files: [
-                  {
-                    id: string;
-                    name: string;
-                    url: string;
-                  }
-                ];
+                speaker: string;
+                file: string;
               }
             ]
           | [
@@ -413,34 +424,38 @@ declare namespace SDK {
             ]
           | [
               {
-                id: string;
                 name: string;
                 url: string;
               }
             ]
           | {
-              content: {};
+              content: String;
             };
       }
     ];
   };
-  type ModuleBody = {
-    lan: string;
-    content:
+  type Language = {
+    lang: string;
+    event: string;
+    register: string;
+    module: string;
+    basic: boolean;
+    key: string;
+    value: string;
+  };
+  type Module = {
+    id: string;
+    name: string;
+    type: string;
+    body:
       | [
           {
             date: string;
             start: string;
             end: string;
             subject: string;
-            speakers: string;
-            files: [
-              {
-                id: string;
-                name: string;
-                url: string;
-              }
-            ];
+            speaker: string;
+            file: string;
           }
         ]
       | [
@@ -453,13 +468,12 @@ declare namespace SDK {
         ]
       | [
           {
-            id: string;
             name: string;
             url: string;
           }
         ]
       | {
-          content: {};
+          content: String;
         };
   };
   type Agenda = {
@@ -467,14 +481,8 @@ declare namespace SDK {
     start: string;
     end: string;
     subject: string;
-    speakers: string;
-    files: [
-      {
-        id: string;
-        name: string;
-        url: string;
-      }
-    ];
+    speaker: string;
+    file: string;
   };
   type Guest = {
     avatar: string;
@@ -483,14 +491,9 @@ declare namespace SDK {
     intro: string;
   };
   type Custom = {
-    content: {};
-  };
-  type Language = {
-    lan: string;
-    content: {};
+    content: String;
   };
   type File = {
-    id: string;
     name: string;
     url: string;
   };
@@ -503,21 +506,16 @@ declare namespace SDK {
     code: string;
     body: [
       {
-        lan: string;
-        content: [
+        basic: boolean;
+        required: boolean;
+        key: string;
+        type: "INPUT" | "RADIO" | "CHECKBOX" | "SELECT" | "DATE";
+        title: string;
+        placeholder: string;
+        options: [
           {
-            basic: boolean;
-            required: boolean;
-            key: string;
-            type: "INPUT" | "RADIO" | "CHECKBOX" | "SELECT" | "DATE";
-            title: string;
-            placeholder: string;
-            options: [
-              {
-                label: string;
-                value: string;
-              }
-            ];
+            label: string;
+            value: string;
           }
         ];
       }

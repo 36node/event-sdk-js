@@ -23,7 +23,7 @@
   "scripts": {
     "build": "sketch build",
     "format": "prettier --trailing-comma es5 --write 'src/**/*.js'",
-    "gen": "swagen sdk ../../zzswang/event/openapi.yml",
+    "gen": "swagen sdk ../event/openapi.yml",
     "lint": "sketch lint src",
     "release": "standard-version",
     "start": "bin/mock-server.js",
