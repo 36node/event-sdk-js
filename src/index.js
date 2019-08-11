@@ -425,4 +425,25 @@ export default class SDK {
       });
     },
   };
+  /**
+   * signature's methods
+   */
+  signature = {
+    /**
+     * Get a signature
+     *
+     * @param {GetSignatureRequest} req getSignature request
+     * @returns {Promise<GetSignatureResponse>} A valid signature
+     */
+    getSignature: (req = {}) => {
+      const { url, headers } = req;
+
+      if (!url) throw new Error("url is required for getSignature");
+
+      return fetch(`${this.base}/signatures/${url}`, {
+        method: "GET",
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+  };
 }

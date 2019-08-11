@@ -12,6 +12,7 @@ declare class SDK {
   register: SDK.RegisterAPI;
   attendee: SDK.AttendeeAPI;
   language: SDK.LanguageAPI;
+  signature: SDK.SignatureAPI;
 }
 
 declare namespace SDK {
@@ -113,6 +114,12 @@ declare namespace SDK {
      * 删除指定语言
      */
     deleteLanguage(req: DeleteLanguageRequest): Promise<DeleteLanguageResponse>;
+  }
+  export interface SignatureAPI {
+    /**
+     * Get a signature
+     */
+    getSignature(req: GetSignatureRequest): Promise<GetSignatureResponse>;
   }
 
   type ListEventsRequest = {
@@ -366,6 +373,14 @@ declare namespace SDK {
     languageId: string;
   };
 
+  type GetSignatureRequest = {
+    url: string;
+  };
+
+  type GetSignatureResponse = {
+    body: Signature;
+  };
+
   type Event = {
     id: string;
     createdAt: string;
@@ -428,6 +443,13 @@ declare namespace SDK {
                 url: string;
               }
             ]
+          | [
+              {
+                name: string;
+                url: string;
+                link: string;
+              }
+            ]
           | {
               content: String;
             };
@@ -472,6 +494,13 @@ declare namespace SDK {
             url: string;
           }
         ]
+      | [
+          {
+            name: string;
+            url: string;
+            link: string;
+          }
+        ]
       | {
           content: String;
         };
@@ -496,6 +525,11 @@ declare namespace SDK {
   type File = {
     name: string;
     url: string;
+  };
+  type Subvenue = {
+    name: string;
+    url: string;
+    link: string;
   };
   type Register = {
     id: string;
@@ -563,6 +597,12 @@ declare namespace SDK {
         signed: boolean;
       }
     ];
+  };
+  type Signature = {
+    appId: string;
+    timestamp: string;
+    nonceStr: string;
+    content: string;
   };
   type Err = {
     code: string;
