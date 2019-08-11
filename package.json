@@ -1,6 +1,6 @@
 {
   "name": "@36node/event-sdk",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Event sdk.",
   "repository": {
     "url": "36node/event-sdk",
